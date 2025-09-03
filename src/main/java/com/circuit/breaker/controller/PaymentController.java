@@ -6,10 +6,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Rest controller for circuit breaker application
+ *
+ * @author Saivarma Akarapu
+ */
 @RestController
 public class PaymentController {
-
-    private static final String TESTED = "TESTED";
 
     private final PaymentService paymentService;
 
@@ -17,9 +20,14 @@ public class PaymentController {
         this.paymentService = paymentService;
     }
 
-    @GetMapping("/circuit/breaker/{size}")
-    public ResponseEntity<String> demoCircuitBreakerPattern(@PathVariable("size") Integer loopSize) {
-        return ResponseEntity.ok(paymentService.makePaymentPrimary(loopSize));
+    /**
+     * API to check circuit breaker
+     * @param amount For transactions using gateways
+     * @return Response from the gateway used (Either primary or secondary)
+     */
+    @GetMapping("/circuit/breaker/{amount}")
+    public ResponseEntity<String> demoCircuitBreakerPattern(@PathVariable("amount") Integer amount) {
+        return ResponseEntity.ok(paymentService.makePaymentPrimary(amount));
     }
 
 }

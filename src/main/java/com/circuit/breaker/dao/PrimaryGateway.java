@@ -6,6 +6,11 @@ import org.springframework.stereotype.Component;
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 
+/**
+ * Simulation of a gateway
+ *
+ * @author Saivarma Akarapu
+ */
 @Component
 public class PrimaryGateway {
 
@@ -15,12 +20,8 @@ public class PrimaryGateway {
         this.amountQueue = new ArrayBlockingQueue<>(value);
     }
 
-    public boolean addAmount(int amount) {
-        return amountQueue.offer(amount);
-    }
-
-    public Queue<Integer> getAmountQueue() {
-        return amountQueue;
+    public void addAmount(int amount) {
+        amountQueue.add(amount);
     }
 
 }

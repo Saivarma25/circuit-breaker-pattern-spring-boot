@@ -7,6 +7,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service clas for circuit breaker and payment transactions
+ *
+ * @author Saivarma Akarapu
+ */
 @Service
 public class PaymentService {
 
@@ -26,18 +31,22 @@ public class PaymentService {
         this.secondaryGateway = secondaryGateway;
     }
 
+    /**
+     * Circuit Breaker method that handles failures with primary gateway if any and redirects the
+     * transactions to secondary gateway when needed (CLOSE, OPEN and HALF-OPEN)
+     * @param amountToPay Some integer to make a transaction
+     * @return Response from primary gateway otherwise secondary gateways
+     */
     @CircuitBreaker(name = PAYMENT_SERVICE, fallbackMethod = "fallbackMethod")
     public String makePaymentPrimary(int amountToPay) {
 
         // Primary Gateway call
         log.info("Inside primary gateway call");
-        if (!primaryGateway.addAmount(amountToPay))
-            throw new RuntimeException("Primary Gateway not available");
-
+        primaryGateway.addAmount(amountToPay);
         return "Transaction succeeded with primary gateway";
     }
 
-    public String fallbackMethod(int amountToPay, Throwable t) {
+    private String fallbackMethod(int amountToPay, Throwable t) {
 
         // secondary call
         log.info("Primary gateway failed: {}, Inside secondary gateway call", t.getMessage());

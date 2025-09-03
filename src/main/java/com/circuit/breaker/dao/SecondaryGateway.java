@@ -6,6 +6,11 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayDeque;
 import java.util.Queue;
 
+/**
+ * Simulation of a gateway
+ *
+ * @author Saivarma Akarapu
+ */
 @Component
 public class SecondaryGateway {
 
@@ -17,10 +22,6 @@ public class SecondaryGateway {
 
     public void addAmount(int amount) {
         amountQueue.add(amount);
-    }
-
-    public Queue<Integer> getAmountQueue() {
-        return amountQueue;
     }
 
 }
